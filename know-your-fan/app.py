@@ -1,190 +1,21 @@
-from flask import Flask, render_template, request, redirect, url_for
-import json
-import os
+from flask import Flask, render_template, request
+from validator import validar_cpf
+from ocr_utils import extrair_texto
 
 app = Flask(__name__)
-UPLOAD_FOLDER = 'uploads'
-DATABASE = 'database/fans.json'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# Garante que o arquivo JSON exista
-if not os.path.exists(DATABASE):
-    with open(DATABASE, 'w') as f:
-        json.dump([], f)
-
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('form.html')
-
-@app.route('/submit', methods=['POST'])
-def submit():
-    nome = request.form['nome']
-    cpf = request.form['cpf']
-    cidade = request.form['cidade']
-    interesses = request.form.getlist('interesses')
-    eventos = request.form['eventos']
-
-    # Validação do CPF (usando a função que já criamos)
-    if not validar_cpf(cpf):
-        return render_template('form.html', error="CPF inválido. Por favor, insira um CPF válido.")
-
-    # Processar a imagem enviada e extrair texto usando OCR
-    doc = request.files['documento']
-    if doc:
-        # Salvar o documento
-        filename = doc.filename
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        doc.save(filepath)
-
-        # Realizar OCR no documento
-        extracted_text = ocr_from_image(filepath)
-        print("Texto extraído do documento:")
-        print(extracted_text)
-
-    data = {
-        "nome": nome,
-        "cpf": cpf,
-        "cidade": cidade,
-        "interesses": interesses,
-        "eventos": eventos,
-        "texto_extraido": extracted_text,
-    }
-
-    # Salvar dados no arquivo JSON
-    with open(DATABASE, 'r+') as f:
-        fans = json.load(f)
-        fans.append(data)
-        f.seek(0)
-        json.dump(fans, f, indent=2)
-
-    return render_template('confirm.html', fan=data)
-@app.route('/submit', methods=['POST'])
-def submit():
-    nome = request.form['nome']
-    cpf = request.form['cpf']
-    cidade = request.form['cidade']
-    interesses = request.form.getlist('interesses')
-    eventos = request.form['eventos']
-
-    # Validação do CPF (usando a função que já criamos)
-    if not validar_cpf(cpf):
-        return render_template('form.html', error="CPF inválido. Por favor, insira um CPF válido.")
-
-    # Processar a imagem enviada e extrair texto usando OCR
-    doc = request.files['documento']
-    if doc:
-        # Salvar o documento
-        filename = doc.filename
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        doc.save(filepath)
-
-        # Realizar OCR no documento
-        extracted_text = ocr_from_image(filepath)
-        print("Texto extraído do documento:")
-        print(extracted_text)
-
-    data = {
-        "nome": nome,
-        "cpf": cpf,
-        "cidade": cidade,
-        "interesses": interesses,
-        "eventos": eventos,
-        "texto_extraido": extracted_text,
-    }
-
-    # Salvar dados no arquivo JSON
-    with open(DATABASE, 'r+') as f:
-        fans = json.load(f)
-        fans.append(data)
-        f.seek(0)
-        json.dump(fans, f, indent=2)
-
-    return render_template('confirm.html', fan=data)
-@app.route('/submit', methods=['POST'])
-def submit():
-    nome = request.form['nome']
-    cpf = request.form['cpf']
-    cidade = request.form['cidade']
-    interesses = request.form.getlist('interesses')
-    eventos = request.form['eventos']
-
-    # Validação do CPF (usando a função que já criamos)
-    if not validar_cpf(cpf):
-        return render_template('form.html', error="CPF inválido. Por favor, insira um CPF válido.")
-
-    # Processar a imagem enviada e extrair texto usando OCR
-    doc = request.files['documento']
-    if doc:
-        # Salvar o documento
-        filename = doc.filename
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        doc.save(filepath)
-
-        # Realizar OCR no documento
-        extracted_text = ocr_from_image(filepath)
-        print("Texto extraído do documento:")
-        print(extracted_text)
-
-    data = {
-        "nome": nome,
-        "cpf": cpf,
-        "cidade": cidade,
-        "interesses": interesses,
-        "eventos": eventos,
-        "texto_extraido": extracted_text,
-    }
-
-    # Salvar dados no arquivo JSON
-    with open(DATABASE, 'r+') as f:
-        fans = json.load(f)
-        fans.append(data)
-        f.seek(0)
-        json.dump(fans, f, indent=2)
-
-    return render_template('confirm.html', fan=data)
-@app.route('/submit', methods=['POST'])
-def submit():
-    nome = request.form['nome']
-    cpf = request.form['cpf']
-    cidade = request.form['cidade']
-    interesses = request.form.getlist('interesses')
-    eventos = request.form['eventos']
-
-    # Validação do CPF (usando a função que já criamos)
-    if not validar_cpf(cpf):
-        return render_template('form.html', error="CPF inválido. Por favor, insira um CPF válido.")
-
-    # Processar a imagem enviada e extrair texto usando OCR
-    doc = request.files['documento']
-    if doc:
-        # Salvar o documento
-        filename = doc.filename
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        doc.save(filepath)
-
-        # Realizar OCR no documento
-        extracted_text = ocr_from_image(filepath)
-        print("Texto extraído do documento:")
-        print(extracted_text)
-
-    data = {
-        "nome": nome,
-        "cpf": cpf,
-        "cidade": cidade,
-        "interesses": interesses,
-        "eventos": eventos,
-        "texto_extraido": extracted_text,
-    }
-
-    # Salvar dados no arquivo JSON
-    with open(DATABASE, 'r+') as f:
-        fans = json.load(f)
-        fans.append(data)
-        f.seek(0)
-        json.dump(fans, f, indent=2)
-
-    return render_template('confirm.html', fan=data)
-
+    mensagem = ""
+    if request.method == 'POST':
+        cpf = request.form['cpf']
+        if not validar_cpf(cpf):
+            mensagem = "CPF inválido!"
+        else:
+            documento = request.files['documento']
+            texto = extrair_texto(documento)
+            mensagem = f"OCR realizado! Detalhes extraídos: {texto[:100]}..."
+    return render_template("index.html", mensagem=mensagem)
 
 if __name__ == '__main__':
     app.run(debug=True)
