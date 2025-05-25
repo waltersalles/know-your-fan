@@ -1,0 +1,35 @@
+body {
+    background-color: #000;
+    color: white;
+    font-family: Arial, sans-serif;
+    background-image: url("https://furia.gg/static/media/hero_bg.d6c28e93.jpg");
+    background-size: cover;
+}
+
+.container {
+    max-width: 500px;
+    margin: 80px auto;
+    padding: 20px;
+    background-color: rgba(15, 15, 15, 0.95);
+    border-radius: 10px;
+    box-shadow: 0 0 10px #f1c40f;
+}
+
+h1 {
+    color: #f1c40f;
+    text-align: center;
+}
+
+input, button {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: none;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #f1c40f;
+    color: black;
+    cursor: pointer;
+}
