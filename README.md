@@ -1,53 +1,55 @@
-# Know Your Fan - Desafio FURIA
+Know Your Fan (KYC FURIOSO)
+📌 Descrição
+O "Know Your Fan" é uma solução de verificação de identidade pensada para fãs da FURIA. O usuário envia seu CPF e uma imagem de documento, e o sistema realiza:
 
-Este repositório contém a solução para o **Challenge #2 - Know Your Fan** do processo seletivo para a vaga de Assistente de Engenharia de Software da FURIA Tech. O objetivo deste desafio foi desenvolver uma aplicação para coletar informações sobre os fãs de eSports, proporcionando uma experiência personalizada e relevante.
+Validação do CPF com lógica nativa
 
-## Descrição
+Leitura do documento via OCR (Tesseract)
 
-O projeto é uma aplicação que simula a coleta de dados de fãs de eSports, focando nos fãs do time FURIA. A aplicação permite realizar as seguintes funcionalidades:
+Interface estilizada com a estética FURIA
 
-- Coleta de dados básicos do usuário, como nome, CPF e interesses.
-- Validação do CPF.
-- OCR (Reconhecimento Óptico de Caracteres) para ler documentos de identificação (simulado).
-- Armazenamento das informações do usuário localmente.
+Resposta com resultado da extração
 
-A ideia é fornecer uma solução que ajude a FURIA a conhecer melhor seus fãs e personalizar experiências e serviços.
+🚀 Funcionalidades
+Upload de documento (imagem)
 
-## Funcionalidades Implementadas
+Validação precisa de CPF
 
-### 1. Coleta de Dados
-A aplicação permite que o usuário insira informações básicas, como:
-- Nome completo
-- CPF
-- Interesses e atividades relacionadas ao eSports
+Leitura de texto OCR da imagem enviada
 
-### 2. Validação de CPF
-Utilizando um script simples de validação, a aplicação garante que o CPF fornecido seja válido, conforme as regras do CPF no Brasil.
+Interface estilizada com visual da FURIA
 
-### 3. OCR de Documento
-Embora não tenha sido feita a integração real com OCR para o reconhecimento de documentos, a estrutura foi preparada para a leitura de imagens de documentos utilizando a biblioteca **pytesseract** (simulada para este desafio).
+Preparado para integração com banco de dados ou IA
 
-### 4. Armazenamento Local
-Os dados fornecidos pelo usuário são armazenados localmente para simulação do processo de armazenamento de informações em um sistema real.
+🛠️ Tecnologias Utilizadas
+Python 3.10+
 
-## Tecnologias Utilizadas
+Flask
 
-- **Python 3.x**: Linguagem principal utilizada para o desenvolvimento da aplicação.
-- **Flask**: Framework utilizado para criação da aplicação web.
-- **pytesseract**: Biblioteca para realizar OCR (simulado).
-- **Validator**: Biblioteca para validação de CPF.
+Tesseract OCR (pytesseract)
 
-## Como Rodar o Projeto
+Pillow
 
-### Requisitos
+HTML + CSS
 
-Antes de rodar o projeto, você precisa ter o Python instalado na sua máquina. Você pode baixar o Python [aqui](https://www.python.org/downloads/).
+🔧 Como Rodar Localmente
+Clone o repositório:
 
-Além disso, é necessário instalar as dependências do projeto. Execute o seguinte comando para instalar as bibliotecas necessárias:
+git clone(https://github.com/waltersalles/know-your-fan/)
+cd kyc-furia
+Instale as dependências:
 
-```bash
-pip install -r requirements.txt
+pip install flask pillow pytesseract
+⚠️ Você também precisa instalar o Tesseract OCR:
 
-Rodando a Aplicação
-Após instalar as dependências, você pode rodar a aplicação com o comando:
+Windows: baixe o instalador .exe e adicione o caminho ao PATH.
+
+Linux: sudo apt install tesseract-ocr
+
+Mac: brew install tesseract
+
+Rode a aplicação:
 python app.py
+Acesse:
+http://127.0.0.1:5000
+
